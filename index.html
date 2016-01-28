@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>OJ Aggregator</title>
+</head>
+<body>
+
+<form>
+	<input type="text" name="spoj-input" id="spoj-input" placeholder="">
+	<button id="spoj-submit" class="oj-submit-button">Submit</button>
+</form>
+
+</body>
+
+
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	$('.oj-submit-button').click(function(event) {
+		event.preventDefault();
+		switch(event.target.id) {
+			case 'spoj-submit': spojSubmit();
+		}
+	});
+
+});
+
+function spojSubmit() {
+	// $.get({
+	// 	type: "GET",
+	// 	url: "spoj.js?handle=" + $('#spoj-input').val(),
+	// 	success: function (data) {
+			
+	// 	}
+	// });
+
+	var parameters = { handle: $('#spoj-input').val() };
+	$.get('/spoj', parameters, function(data) {
+		console.log(data);
+	});
+}
+
+
+
+
+
+</script>
+
+
+</html>
