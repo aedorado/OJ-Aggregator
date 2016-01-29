@@ -21,6 +21,8 @@
 <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript">
 
+var cf = [];
+
 $(document).ready(function() {
 
 	$('.oj-submit-button').click(function(event) {
@@ -37,7 +39,7 @@ $(document).ready(function() {
 function cfSubmit() {
 	var parameters = { handle: $('#cf-input').val() };
 	$.get('/cf', parameters, function(data) {
-		console.log(data);
+		cf = data;
 	});
 }
 
