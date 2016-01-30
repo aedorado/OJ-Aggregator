@@ -15,43 +15,51 @@
 	<button id="cf-submit" class="oj-submit-button">Submit</button>
 </form>
 
+<form>
+	<input type="text" name="cchef-input" id="cchef-input" placeholder="cchef">
+	<button id="cchef-submit" class="oj-submit-button">Submit</button>
+</form>
+
 </body>
 
 
 <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript">
 
-var cf = [];
+var cfArr = [];
+var cchefArr = []
 
 $(document).ready(function() {
 
 	$('.oj-submit-button').click(function(event) {
 		event.preventDefault();
 		switch(event.target.id) {
-			case 'spoj-submit': spojSubmit();
-								break;
-			case 'cf-submit'  : cfSubmit();
+			case 'spoj-submit'	: spojSubmit();
+								  break;
+			case 'cf-submit'  	: cfSubmit();
+								  break;
+			case 'cchef-submit'	: cchefSubmit(); 
+								  break;
 		}
 	});
 
 });
 
-function cfSubmit() {
-	var parameters = { handle: $('#cf-input').val() };
-	$.get('/cf', parameters, function(data) {
-		cf = data;
+function cchefSubmit() {
+	var parameters = { handle: $('#cchef-input').val() };
+	$.get('/cchef', parameters, function(data) {
+		cchefArr = data;
 	});
 }
 
+function cfSubmit() {
+	var parameters = { handle: $('#cf-input').val() };
+	$.get('/cf', parameters, function(data) {
+		cfArr = data;
+	});
+}
 
 function spojSubmit() {
-	// $.get({
-	// 	type: "GET",
-	// 	url: "spoj.js?handle=" + $('#spoj-input').val(),
-	// 	success: function (data) {
-			
-	// 	}
-	// });
 
 	var parameters = { handle: $('#spoj-input').val() };
 	$.get('/spoj', parameters, function(data) {

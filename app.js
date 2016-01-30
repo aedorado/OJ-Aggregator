@@ -9,20 +9,20 @@ var express = require('express'),
 app.use(express.static('public'));
 
 app.get('/', function(req, res) {
-	console.log(__dirname);
-	res.sendFile(__dirname + '/index.html');
+    console.log(__dirname);
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/spoj', function(req, res) {
-	// res.send(req.query.handle);
-	var url = 'http://www.spoj.com/status/' + req.query.handle + '/signedlist/';
-	console.log(url);
+    // res.send(req.query.handle);
+    var url = 'http://www.spoj.com/status/' + req.query.handle + '/signedlist/';
+    console.log(url);
 
-	request(url, function(error, response, html) {
+    request(url, function(error, response, html) {
         if (!error  && response.statusCode == 200) {
-        	//res.send(req.query.handle);
-        	//console.log(html);
-        	res.send(html);
+            //res.send(req.query.handle);
+            //console.log(html);
+            res.send(html);
         }
     });
 });
@@ -78,6 +78,63 @@ app.get('/cf', function(req, res) {
     }
 
 
+});
+
+app.get('/cchef', function(req, res) {
+    console.log('Codechef Request Recieved');
+    var url = 'https://www.codechef.com/recent/user?page=undefined&user_handle=' + req.query.handle;
+    console.log(req.query.handle);
+    console.log(url);
+    request({uri : url}, function(error, response, html) {
+        console.log(error);
+        if (!error  && response.statusCode == 200) {
+            var json = JSON.parse(html);
+            pid = json['max_page'];
+            console.log('Recieved pageindex=' + pid);
+            extractAllCodechef(parseInt(pid), res);
+        }
+    });
+
+    function extractAllCodechef(pid, res) {
+        console.log('Extracting All');
+        var arr = [], count = 0;
+        for (var i = 0; i < pid; i++) {
+            url = 'https://www.codechef.com/recent/user?page=' + i + '&user_handle=' + req.query.handle;
+            console.log(url);
+            request({uri : url}, function(error, response, html) {
+                if (!error  && response.statusCode == 200) {
+
+                    var content = JSON.parse(html)['content'];
+                    $ = cheerio.load(content);
+
+                    $('.kol').each(function() {
+                        var element = {
+                            when : $('td:nth-child(1)', $(this)).html().trim(),
+                            problem: $('td:nth-child(2) a', $(this)).attr('href').trim(),
+                            lang: $('td:nth-child(4)', $(this)).html().trim(),
+                            verdict: $('td:nth-child(3) span', $(this)).attr('title').trim(),
+                        };
+
+                        console.log(element);
+
+                        arr.push(element);
+                        if ($(this).is(':last-child')) {
+                            count++;
+                            console.log(count, arr.length);
+                        }
+
+                        if (count == pid) {
+                            console.log('Returning..');
+                            console.log(arr.length);
+                            res.contentType('application/json');
+                            res.send(JSON.stringify(arr));
+                        }
+
+                    });
+                }
+            });
+        }
+    }
 });
 
 
