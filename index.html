@@ -6,17 +6,18 @@
 <body>
 
 <form>
-	<input type="text" name="spoj-input" id="spoj-input" placeholder="spoj">
+	<input type="text" name="spoj-input" id="spoj-input" placeholder="spoj" required>
 	<button id="spoj-submit" class="oj-submit-button">Submit</button>
 </form>
 
 <form>
-	<input type="text" name="cf-input" id="cf-input" placeholder="cf">
-	<button id="cf-submit" class="oj-submit-button">Submit</button>
+	<input type="text" name="cf-input" id="cf-input" placeholder="cf" required>
+	<button id="cf-submit" class="oj-submit-button">Scrap</button>
+	<button id="cf-api" class="oj-submit-button">API</button>
 </form>
 
 <form>
-	<input type="text" name="cchef-input" id="cchef-input" placeholder="cchef">
+	<input type="text" name="cchef-input" id="cchef-input" placeholder="cchef" required>
 	<button id="cchef-submit" class="oj-submit-button">Submit</button>
 </form>
 
@@ -27,7 +28,8 @@
 <script type="text/javascript">
 
 var cfArr = [];
-var cchefArr = []
+var cchefArr = [];
+var cfapiArr = [];
 
 $(document).ready(function() {
 
@@ -37,6 +39,8 @@ $(document).ready(function() {
 			case 'spoj-submit'	: spojSubmit();
 								  break;
 			case 'cf-submit'  	: cfSubmit();
+								  break;
+			case 'cf-api'		: cfapi();
 								  break;
 			case 'cchef-submit'	: cchefSubmit(); 
 								  break;
@@ -56,6 +60,13 @@ function cfSubmit() {
 	var parameters = { handle: $('#cf-input').val() };
 	$.get('/cf', parameters, function(data) {
 		cfArr = data;
+	});
+}
+
+function cfapi() {
+	var parameters = { handle: $('#cf-input').val() };
+	$.get('/cfapi', parameters, function(data) {
+		cfapiArr = data;
 	});
 }
 
