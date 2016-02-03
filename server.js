@@ -13,6 +13,105 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/hrank', function(req, res) {
+    console.log('Hackerrank Request Recieved');
+    var url = 'http://www.hackerrank.com/rest/hackers/' + req.query.handle + '/recent_challenges?offset=0&limit=10000';
+    request({uri : url}, function(error, response, html) {
+        if (!error  && response.statusCode == 200) {
+            var arr = []
+            var json = JSON.parse(html);
+            json = json['models'];
+            for (var i = 0; i < json.length; i++) {
+                var element = {
+                    when : json[i].created_at,
+                    problem : json[i].name,
+                }
+                element.when = hackerRankDateToEpoch(element.when.substring(0, 19).replace('T', ' '));
+                arr.push(element);
+            }
+            console.log('Returning..')
+            res.send(JSON.stringify(arr));
+        }
+    });
+
+    function hackerRankDateToEpoch(dateString) {
+        var d;
+
+        var arr = dateString.split(' ');
+        d = new Date(arr[0]);
+        arr = arr[1].split(':')
+ 
+        d.setHours(arr[0]);
+        d.setMinutes(arr[1]);
+        d.setSeconds(arr[2]);
+
+        return d.getTime() / 1000;
+    }
+
+});
+
+app.get('/hearth', function(req, res) {
+    console.log('Hackerearth Request Recieved');
+    var url = 'http://www.hackerearth.com/AJAX/feed/newsfeed/submission/user/' + req.query.handle + '/';
+
+    // var postData = {
+    //     index:80
+    // };
+    // require('request').post({
+    //                             uri : url,
+    //                             headers : {'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+    //                             body : require('querystring').stringify(postData)
+    //                         },
+    //                         function(err,res,body){
+    //                             console.log(body);
+    //                             console.log(res.statusCode);
+    //                         });
+
+    request({uri : url}, function(error, response, html) {
+        // console.log(error)
+        mp = []
+        if (!error && response.statusCode == 200) {
+            var arr = []
+            var json = JSON.parse(html);
+
+            for (i = 0; i < json['count']; i++) {
+                $ = cheerio.load(json['feed' + i]);
+
+                if (mp[$('td:nth-child(2)').attr('title')] === undefined) {
+                    element = {
+                        when : $('td:nth-child(8) a').attr('data-livestamp'),
+                        problem : $('td:nth-child(2)').attr('title'),
+                        verdict : $('td:nth-child(3) div').attr('class'),
+                        lang : $('td:nth-child(6)').text()
+                    }
+                    mp[element.problem] = 1;
+                    console.log(element);
+                    arr.push(element);
+                }
+            }
+
+            console.log(arr.length);
+            console.log('Returning..');
+            res.send(JSON.stringify(arr));
+        }
+    });
+
+    function hackerRankDateToEpoch(dateString) {
+        var d;
+
+        var arr = dateString.split(' ');
+        d = new Date(arr[0]);
+        arr = arr[1].split(':')
+ 
+        d.setHours(arr[0]);
+        d.setMinutes(arr[1]);
+        d.setSeconds(arr[2]);
+
+        return d.getTime() / 1000;
+    }
+    
+});
+
 app.get('/spoj', function(req, res) {
     // res.send(req.query.handle);
     var url = 'http://www.spoj.com/status/' + req.query.handle + '/signedlist/';
@@ -190,7 +289,7 @@ app.get('/cchef', function(req, res) {
 
             d = new Date(yy, mm, dd, h, m);
         }
-        return d.getTime();
+        return d.getTime() / 1000;
     }
 
 

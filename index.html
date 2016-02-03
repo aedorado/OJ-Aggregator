@@ -21,6 +21,16 @@
 	<button id="cchef-submit" class="oj-submit-button">Submit</button>
 </form>
 
+<form>
+	<input type="text" name="hrank-input" id="hrank-input" placeholder="hrank" required>
+	<button id="hrank-submit" class="oj-submit-button">Submit</button>
+</form>
+
+<form>
+	<input type="text" name="hearth-input" id="hearth-input" placeholder="hearth" required>
+	<button id="hearth-submit" class="oj-submit-button">Submit</button>
+</form>
+
 </body>
 
 
@@ -30,6 +40,8 @@
 var cfArr = [];
 var cchefArr = [];
 var cfapiArr = [];
+var hrankArr = [];
+var hearthArr = [];
 
 $(document).ready(function() {
 
@@ -44,10 +56,30 @@ $(document).ready(function() {
 								  break;
 			case 'cchef-submit'	: cchefSubmit(); 
 								  break;
+			case 'hrank-submit' : hrankSubmit();
+								  break;
+			case 'hearth-submit': hearthSubmit();
+								  break;
 		}
 	});
 
 });
+
+function hrankSubmit() {
+	var parameters = { handle: $('#hrank-input').val() };
+	$.get('/hrank', parameters, function(data) {
+		hrankArr = data;
+	});
+	console.log(hrankArr);
+}
+
+function hearthSubmit() {
+	var parameters = { handle: $('#hearth-input').val() };
+	$.get('/hearth', parameters, function(data) {
+		hearthArr = data;
+	});
+	console.log(hearthArr);
+}
 
 function cchefSubmit() {
 	var parameters = { handle: $('#cchef-input').val() };
