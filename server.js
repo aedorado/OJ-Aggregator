@@ -53,16 +53,38 @@ app.get('/hrank', function(req, res) {
 app.get('/hearth', function(req, res) {
     console.log('Hackerearth Request Recieved');
     var url = 'http://www.hackerearth.com/AJAX/feed/newsfeed/submission/user/' + req.query.handle + '/';
+    var url = 'http://www.hackerearth.com/AJAX/feed/newsfeed/submission/user/anurag.dorado/';
+
+    // request({
+    // url: 'http://www.hackerearth.com/AJAX/feed/newsfeed/submission/user/anurag.dorado/',
+    // qs: {index: '80'}, //Query string data
+    // form: {index: '80'},
+    // method: 'POST',
+    // headers: {'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    //             'Content-Length' :'8'
+    //         },
+    // // body: 'Hello Hello! String body!' //Set the body as a string
+    // }, function(error, response, body){
+    //     if(error) {
+    //         console.log(error);
+    //     } else {
+    //         console.log(response.statusCode, body);
+    //     }
+    // });
 
     // var postData = {
     //     index:80
     // };
     // require('request').post({
     //                             uri : url,
-    //                             headers : {'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+    //                             headers : {'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    //                                         'Content-Length' :'8'
+    //                                     },
     //                             body : require('querystring').stringify(postData)
     //                         },
     //                         function(err,res,body){
+    //                             console.log(err);
+    //                             // console.log(res);
     //                             console.log(body);
     //                             console.log(res.statusCode);
     //                         });

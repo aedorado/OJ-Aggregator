@@ -31,6 +31,12 @@
 	<button id="hearth-submit" class="oj-submit-button">Submit</button>
 </form>
 
+<form>
+	<input type="date" id="start-date" placeholder='yyyy-mm-dd'>
+	<input type="date" id="end-date" placeholder='yyyy-mm-dd'>
+	<button id="apply-submit" class="oj-apply-button">Submit</button>
+</form>
+
 </body>
 
 
@@ -61,6 +67,24 @@ $(document).ready(function() {
 			case 'hearth-submit': hearthSubmit();
 								  break;
 		}
+	});
+
+	$('#apply-submit').click(function(event) {
+
+		function dateFilter(ele) {
+			// console.log(ele);
+			return 1;
+		}
+
+		event.preventDefault();
+		var startept = new Date($('#start-date').val()).getTime() / 1000;
+		var endept = new Date($('#end-date').val()).getTime() / 1000;
+		console.log(startept, endept);
+		
+		console.log(cfapiArr.length);
+		cffilteredArr = cfapiArr.filter(dateFilter);
+		console.log(cfapiArr.length);
+
 	});
 
 });
