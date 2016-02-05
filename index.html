@@ -72,8 +72,8 @@ $(document).ready(function() {
 	$('#apply-submit').click(function(event) {
 
 		function dateFilter(ele) {
-			// console.log(ele);
-			return 1;
+			console.log(ele.when, ele.when >= startept && ele.when <= endept);
+			return ele.when >= startept && ele.when <= endept;
 		}
 
 		event.preventDefault();
@@ -83,7 +83,7 @@ $(document).ready(function() {
 		
 		console.log(cfapiArr.length);
 		cffilteredArr = cfapiArr.filter(dateFilter);
-		console.log(cfapiArr.length);
+		console.log(cffilteredArr.length);
 
 	});
 
